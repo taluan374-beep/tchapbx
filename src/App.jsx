@@ -1,9 +1,9 @@
-import { lazy, Suspense } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Architecture from './components/Architecture'
 import ApiDemo from './components/ApiDemo'
 import PerformanceGrid from './components/PerformanceGrid'
+import Pricing from './components/Pricing'
 import Footer from './components/Footer'
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
         <Architecture />
         <ApiDemo />
         <PerformanceGrid />
+        <Pricing />
       </main>
       <Footer />
     </div>
