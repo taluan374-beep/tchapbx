@@ -34,9 +34,12 @@ const Navbar = () => {
           </a>
 
           {/* Nav Links */}
-          <div className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
             <a href="#architecture" className="text-gray-400 hover:text-white transition-colors">
               Architecture
+            </a>
+            <a href="#ha-architecture" className="text-gray-400 hover:text-white transition-colors">
+              HA
             </a>
             <a href="#api" className="text-gray-400 hover:text-white transition-colors">
               API
@@ -50,7 +53,7 @@ const Navbar = () => {
             <a href="#" className="text-gray-400 hover:text-white transition-colors font-mono text-sm">
               Docs
             </a>
-          </div>
+          </nav>
 
           {/* CTAs */}
           <div className="flex items-center gap-4">

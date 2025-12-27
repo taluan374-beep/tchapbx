@@ -1,8 +1,12 @@
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const PerformanceGrid = () => {
+  const [activeModal, setActiveModal] = useState(null)
+
   const metrics = [
     {
+      id: 'latency',
       value: '<30ms',
       label: 'Global Latency',
       desc: 'P99 latency across all regions',
@@ -13,8 +17,31 @@ const PerformanceGrid = () => {
       ),
       color: 'neon-cyan',
       gradient: 'from-neon-cyan/20 to-neon-cyan/5',
+      modalTitle: 'Ultra-Low Latency Infrastructure',
+      modalContent: {
+        summary: 'Our <30ms latency is achieved through strategic infrastructure placement and optimized routing.',
+        details: [
+          {
+            title: 'Edge Locations',
+            desc: '15+ Points of Presence (POPs) strategically located near major internet exchanges worldwide.',
+          },
+          {
+            title: 'Direct Peering',
+            desc: 'Direct peering agreements with 200+ carriers and ISPs, bypassing public internet congestion.',
+          },
+          {
+            title: 'Anycast Routing',
+            desc: 'Intelligent anycast routing automatically directs traffic to the nearest healthy server.',
+          },
+          {
+            title: 'Optimized Protocols',
+            desc: 'Custom UDP-based protocols for signaling, reducing TCP overhead and handshake delays.',
+          },
+        ],
+      },
     },
     {
+      id: 'mos',
       value: '>4.2',
       label: 'MOS Score',
       desc: 'Mean Opinion Score for call quality',
@@ -25,8 +52,31 @@ const PerformanceGrid = () => {
       ),
       color: 'neon-purple',
       gradient: 'from-neon-purple/20 to-neon-purple/5',
+      modalTitle: 'Crystal Clear Audio Quality',
+      modalContent: {
+        summary: 'MOS (Mean Opinion Score) above 4.2 indicates excellent voice quality, comparable to HD audio.',
+        details: [
+          {
+            title: 'Opus Codec',
+            desc: 'Advanced Opus codec with adaptive bitrate (8-128 kbps) ensures optimal quality at any bandwidth.',
+          },
+          {
+            title: 'Jitter Buffer',
+            desc: 'Intelligent adaptive jitter buffer compensates for network irregularities without adding latency.',
+          },
+          {
+            title: 'Packet Loss Concealment',
+            desc: 'AI-powered PLC algorithms reconstruct lost packets, maintaining quality even at 5% packet loss.',
+          },
+          {
+            title: 'Echo Cancellation',
+            desc: 'Hardware-accelerated AEC with 128ms tail length eliminates acoustic echo in any environment.',
+          },
+        ],
+      },
     },
     {
+      id: 'pops',
       value: '15+',
       label: 'Global POPs',
       desc: 'Edge locations worldwide',
@@ -37,8 +87,31 @@ const PerformanceGrid = () => {
       ),
       color: 'neon-cyan',
       gradient: 'from-neon-cyan/20 to-neon-cyan/5',
+      modalTitle: 'Global Infrastructure Network',
+      modalContent: {
+        summary: 'Our worldwide presence ensures low latency and high availability for users everywhere.',
+        details: [
+          {
+            title: 'North America',
+            desc: 'POPs in Virginia, Oregon, California, and Toronto covering US and Canada.',
+          },
+          {
+            title: 'Europe',
+            desc: 'Frankfurt, London, Amsterdam, and Paris for comprehensive EU coverage.',
+          },
+          {
+            title: 'Asia Pacific',
+            desc: 'Singapore, Tokyo, Sydney, and Mumbai serving the fastest-growing markets.',
+          },
+          {
+            title: 'Expansion',
+            desc: 'New POPs in São Paulo, Dubai, and Seoul coming Q2 2024.',
+          },
+        ],
+      },
     },
     {
+      id: 'uptime',
       value: '99.99%',
       label: 'Uptime SLA',
       desc: 'Carrier-grade reliability',
@@ -49,8 +122,31 @@ const PerformanceGrid = () => {
       ),
       color: 'status-green',
       gradient: 'from-status-green/20 to-status-green/5',
+      modalTitle: 'Redundant Server Clusters & Automatic Failover',
+      modalContent: {
+        summary: '99.99% uptime means less than 52 minutes of downtime per year. Here\'s how we achieve it.',
+        details: [
+          {
+            title: 'Active-Active Clusters',
+            desc: 'All servers run in active-active mode. No single point of failure. Traffic is load-balanced across multiple nodes.',
+          },
+          {
+            title: 'Automatic Failover',
+            desc: 'Health checks every 5 seconds. Failed servers are removed from rotation in <100ms with zero dropped calls.',
+          },
+          {
+            title: 'Database Replication',
+            desc: 'Synchronous replication across 3 availability zones with automatic leader election.',
+          },
+          {
+            title: 'DDoS Protection',
+            desc: 'Enterprise-grade DDoS mitigation absorbs attacks up to 10 Tbps without service degradation.',
+          },
+        ],
+      },
     },
     {
+      id: 'calls',
       value: '10M+',
       label: 'Calls/Month',
       desc: 'Processed reliably at scale',
@@ -61,8 +157,31 @@ const PerformanceGrid = () => {
       ),
       color: 'neon-purple',
       gradient: 'from-neon-purple/20 to-neon-purple/5',
+      modalTitle: 'Scalable Architecture',
+      modalContent: {
+        summary: 'Our platform handles millions of concurrent calls with horizontal auto-scaling.',
+        details: [
+          {
+            title: 'Horizontal Scaling',
+            desc: 'Kubernetes-orchestrated microservices scale automatically based on call volume.',
+          },
+          {
+            title: 'Media Server Pools',
+            desc: 'Dedicated media server clusters handle RTP streams independently of signaling.',
+          },
+          {
+            title: 'Queue Management',
+            desc: 'Apache Kafka-based event streaming handles peak loads with zero message loss.',
+          },
+          {
+            title: 'Resource Isolation',
+            desc: 'Per-tenant resource quotas ensure one customer\'s traffic spike doesn\'t affect others.',
+          },
+        ],
+      },
     },
     {
+      id: 'packetloss',
       value: '<0.1%',
       label: 'Packet Loss',
       desc: 'Crystal clear audio quality',
@@ -73,6 +192,28 @@ const PerformanceGrid = () => {
       ),
       color: 'neon-cyan',
       gradient: 'from-neon-cyan/20 to-neon-cyan/5',
+      modalTitle: 'Network Quality Optimization',
+      modalContent: {
+        summary: 'Sub-0.1% packet loss ensures every word is heard clearly, even on challenging networks.',
+        details: [
+          {
+            title: 'Premium Transit',
+            desc: 'We use only Tier-1 transit providers with SLA-guaranteed packet delivery.',
+          },
+          {
+            title: 'QoS Marking',
+            desc: 'DSCP/ToS marking ensures voice packets get priority treatment across networks.',
+          },
+          {
+            title: 'FEC (Forward Error Correction)',
+            desc: 'Redundant data allows reconstruction of lost packets without retransmission.',
+          },
+          {
+            title: 'Path Optimization',
+            desc: 'Real-time path analysis routes around congested or lossy network segments.',
+          },
+        ],
+      },
     },
   ]
 
@@ -113,7 +254,8 @@ const PerformanceGrid = () => {
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Enterprise-grade infrastructure that handles millions of calls while
-            maintaining exceptional quality metrics.
+            maintaining exceptional quality metrics.{' '}
+            <span className="text-neon-cyan">Click any card to learn more.</span>
           </p>
         </motion.div>
 
@@ -125,21 +267,35 @@ const PerformanceGrid = () => {
           viewport={{ once: true }}
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {metrics.map((metric, index) => (
-            <motion.div
-              key={index}
+          {metrics.map((metric) => (
+            <motion.button
+              key={metric.id}
               variants={itemVariants}
               whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              className={`glass-card p-8 relative overflow-hidden group cursor-pointer`}
+              onClick={() => setActiveModal(metric)}
+              className={`glass-card p-8 relative overflow-hidden group cursor-pointer text-left w-full`}
+              aria-label={`Learn more about ${metric.label}`}
             >
               {/* Background gradient */}
               <div
                 className={`absolute inset-0 bg-gradient-to-br ${metric.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
               />
 
+              {/* Click indicator */}
+              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="text-xs text-neon-cyan font-mono flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Details
+                </span>
+              </div>
+
               {/* Content */}
               <div className="relative z-10">
-                <div className={`text-${metric.color} mb-4`}>{metric.icon}</div>
+                <div className={`text-${metric.color} mb-4 group-hover:scale-110 transition-transform`}>
+                  {metric.icon}
+                </div>
                 <div className={`text-4xl md:text-5xl font-bold font-mono text-${metric.color} mb-2`}>
                   {metric.value}
                 </div>
@@ -153,7 +309,7 @@ const PerformanceGrid = () => {
               <div
                 className={`absolute top-0 right-0 w-20 h-20 bg-${metric.color}/10 rounded-bl-full`}
               />
-            </motion.div>
+            </motion.button>
           ))}
         </motion.div>
 
@@ -168,10 +324,10 @@ const PerformanceGrid = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 bg-status-green rounded-full animate-pulse" />
+                <span className="w-3 h-3 bg-status-green rounded-full animate-pulse" aria-hidden="true" />
                 <span className="font-semibold">All Systems Operational</span>
               </div>
-              <span className="text-gray-500">|</span>
+              <span className="text-gray-500" aria-hidden="true">|</span>
               <span className="text-gray-400 font-mono text-sm">
                 Last updated: Just now
               </span>
@@ -181,21 +337,21 @@ const PerformanceGrid = () => {
               <div className="text-center">
                 <div className="text-sm text-gray-400">API</div>
                 <div className="flex items-center gap-1">
-                  <span className="w-2 h-2 bg-status-green rounded-full" />
+                  <span className="w-2 h-2 bg-status-green rounded-full" aria-hidden="true" />
                   <span className="text-status-green font-mono text-sm">Operational</span>
                 </div>
               </div>
               <div className="text-center">
                 <div className="text-sm text-gray-400">SIP Proxy</div>
                 <div className="flex items-center gap-1">
-                  <span className="w-2 h-2 bg-status-green rounded-full" />
+                  <span className="w-2 h-2 bg-status-green rounded-full" aria-hidden="true" />
                   <span className="text-status-green font-mono text-sm">Operational</span>
                 </div>
               </div>
               <div className="text-center">
                 <div className="text-sm text-gray-400">Media Servers</div>
                 <div className="flex items-center gap-1">
-                  <span className="w-2 h-2 bg-status-green rounded-full" />
+                  <span className="w-2 h-2 bg-status-green rounded-full" aria-hidden="true" />
                   <span className="text-status-green font-mono text-sm">Operational</span>
                 </div>
               </div>
@@ -213,6 +369,93 @@ const PerformanceGrid = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {activeModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/95 backdrop-blur-sm"
+            onClick={() => setActiveModal(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-2xl bg-navy-800 rounded-2xl overflow-hidden border border-white/10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className={`bg-gradient-to-r ${activeModal.gradient} p-6 border-b border-white/10`}>
+                <button
+                  onClick={() => setActiveModal(null)}
+                  className="absolute top-4 right-4 w-10 h-10 rounded-full bg-navy-900/50 flex items-center justify-center text-gray-400 hover:text-white hover:bg-navy-900 transition-all"
+                  aria-label="Close modal"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+
+                <div className="flex items-center gap-4">
+                  <div className={`text-${activeModal.color}`}>{activeModal.icon}</div>
+                  <div>
+                    <div className={`text-3xl font-bold font-mono text-${activeModal.color}`}>
+                      {activeModal.value}
+                    </div>
+                    <div className="text-white font-semibold">{activeModal.label}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6">
+                <h3 id="modal-title" className="text-xl font-bold mb-4">
+                  {activeModal.modalTitle}
+                </h3>
+                <p className="text-gray-400 mb-6">{activeModal.modalContent.summary}</p>
+
+                <div className="space-y-4">
+                  {activeModal.modalContent.details.map((detail, idx) => (
+                    <div key={idx} className="flex gap-4">
+                      <div className={`w-8 h-8 rounded-lg bg-${activeModal.color}/20 flex items-center justify-center flex-shrink-0`}>
+                        <svg className={`w-4 h-4 text-${activeModal.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-white mb-1">{detail.title}</h4>
+                        <p className="text-gray-400 text-sm">{detail.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-6 border-t border-white/10 flex justify-end gap-4">
+                <button
+                  onClick={() => setActiveModal(null)}
+                  className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+                >
+                  Close
+                </button>
+                <a
+                  href="#"
+                  className={`px-4 py-2 bg-${activeModal.color} text-navy-900 rounded-lg font-semibold hover:opacity-90 transition-opacity`}
+                >
+                  Learn More
+                </a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
