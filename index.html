@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HaPBX - Enterprise-Grade VoIP Infrastructure with 99.999% Uptime. High-Availability PBX solution for IT Teams and DevOps.">
+    <meta name="keywords" content="VoIP, PBX, High Availability, Enterprise, SIP, API, Call Center">
+    <title>HaPBX - Enterprise-Grade VoIP Infrastructure</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-yellow': '#FFD700',
+                        'brand-yellow-dark': '#E6C200',
+                        'brand-black': '#0A0A0A',
+                        'brand-dark': '#111111',
+                        'brand-gray': '#1A1A1A',
+                        'brand-light-gray': '#2A2A2A',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1A1A1A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 4px;
+        }
+        
+        /* Typing cursor animation */
+        .typing-cursor {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Card hover effects */
+        .bento-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .bento-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.15);
+        }
+        
+        /* Arrow animation */
+        .arrow-move {
+            transition: transform 0.3s ease;
+        }
+        .group:hover .arrow-move {
+            transform: translateX(4px);
+        }
+        
+        /* Code window glow */
+        .code-glow {
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.1);
+        }
+        
+        /* Tab active indicator */
+        .tab-indicator {
+            transition: all 0.3s ease;
+        }
+        
+        /* Navbar blur effect */
+        .navbar-blur {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        /* Pulse animation for status */
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Grid pattern background */
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(255, 215, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 215, 0, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+    </style>
+</head>
+<body class="bg-brand-black text-white font-sans antialiased">
+    
+    <!-- Sticky Navbar -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-brand-yellow rounded-lg flex items-center justify-center">
+                        <span class="text-brand-black font-bold text-xl">H</span>
+                    </div>
+                    <span class="text-xl font-bold">HaPBX</span>
+                </a>
+                
+                <!-- Nav Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-300 hover:text-white transition-colors">Features</a>
+                    <a href="#pricing" class="text-gray-300 hover:text-white transition-colors">Pricing</a>
+                    <a href="#developers" class="text-gray-300 hover:text-white transition-colors">Developers</a>
+                    <a href="#docs" class="text-gray-300 hover:text-white transition-colors font-mono text-sm">Docs</a>
+                </div>
+                
+                <!-- CTA Buttons -->
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="hidden sm:block text-gray-300 hover:text-white transition-colors">Sign In</a>
+                    <a href="#" class="bg-brand-yellow text-brand-black px-5 py-2.5 rounded-lg font-semibold hover:bg-brand-yellow-dark transition-colors">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen pt-24 pb-16 relative overflow-hidden grid-pattern">
+        <!-- Background gradient -->
+        <div class="absolute inset-0 bg-gradient-to-b from-brand-black via-brand-black to-brand-dark"></div>
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-yellow/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-yellow/5 rounded-full blur-3xl"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-6 pt-16">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left: Value Prop -->
+                <div class="space-y-8">
+                    <!-- Badge -->
+                    <div class="inline-flex items-center space-x-2 bg-brand-gray/50 border border-brand-light-gray rounded-full px-4 py-2">
+                        <span class="w-2 h-2 bg-green-500 rounded-full pulse-dot"></span>
+                        <span class="text-sm text-gray-300">All systems operational</span>
+                    </div>
+                    
+                    <!-- Headline -->
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                        Enterprise-Grade VoIP Infrastructure.
+                        <span class="gradient-text">99.999% Uptime.</span>
+                    </h1>
+                    
+                    <!-- Subheadline with typing animation -->
+                    <p class="text-xl text-gray-400 leading-relaxed">
+                        Engineered for <span id="typing-text" class="text-brand-yellow font-semibold">IT Teams</span><span class="typing-cursor text-brand-yellow">|</span>. 
+                        Deploy complex call flows in minutes via Dashboard or API.
+                    </p>
+                    
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <a href="#" class="group bg-brand-yellow text-brand-black px-8 py-4 rounded-xl font-semibold text-lg hover:bg-brand-yellow-dark transition-all hover:shadow-lg hover:shadow-brand-yellow/20">
+                            Start Free Trial
+                            <span class="inline-block ml-2 arrow-move">→</span>
+                        </a>
+                        <a href="#" class="group flex items-center space-x-2 border border-gray-600 px-8 py-4 rounded-xl font-mono text-sm hover:border-brand-yellow hover:text-brand-yellow transition-all">
+                            <span>Read Documentation</span>
+                            <svg class="w-4 h-4 arrow-move" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    
+                    <!-- Stats -->
+                    <div class="flex flex-wrap gap-8 pt-8 border-t border-brand-light-gray">
+                        <div>
+                            <div class="text-3xl font-bold text-brand-yellow">50ms</div>
+                            <div class="text-sm text-gray-500">Global Latency</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold">10M+</div>
+                            <div class="text-sm text-gray-500">Calls/Month</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold">500+</div>
+                            <div class="text-sm text-gray-500">Enterprise Clients</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right: Interactive Terminal/Dashboard -->
+                <div class="relative">
+                    <!-- Terminal Window -->
+                    <div class="bg-brand-dark rounded-2xl border border-brand-light-gray overflow-hidden code-glow">
+                        <!-- Terminal Header -->
+                        <div class="flex items-center justify-between px-4 py-3 bg-brand-gray border-b border-brand-light-gray">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <span class="font-mono text-xs text-gray-500">hapbx-config.yaml</span>
+                            <div></div>
+                        </div>
+                        <!-- Terminal Content -->
+                        <div class="p-6 font-mono text-sm leading-relaxed overflow-x-auto">
+                            <pre class="text-gray-300"><span class="text-gray-500"># HaPBX SIP Configuration</span>
+<span class="text-brand-yellow">server:</span>
+  <span class="text-blue-400">host:</span> <span class="text-green-400">"sip.hapbx.io"</span>
+  <span class="text-blue-400">port:</span> <span class="text-purple-400">5060</span>
+  <span class="text-blue-400">transport:</span> <span class="text-green-400">"TLS"</span>
+
+<span class="text-brand-yellow">high_availability:</span>
+  <span class="text-blue-400">enabled:</span> <span class="text-purple-400">true</span>
+  <span class="text-blue-400">failover_time:</span> <span class="text-green-400">"&lt;100ms"</span>
+  <span class="text-blue-400">regions:</span>
+    <span class="text-gray-500">- us-east-1</span>
+    <span class="text-gray-500">- eu-west-1</span>
+    <span class="text-gray-500">- ap-southeast-1</span>
+
+<span class="text-brand-yellow">security:</span>
+  <span class="text-blue-400">encryption:</span> <span class="text-green-400">"SRTP"</span>
+  <span class="text-blue-400">compliance:</span> <span class="text-green-400">"SOC2"</span></pre>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating metrics card -->
+                    <div class="absolute -bottom-6 -left-6 bg-brand-gray border border-brand-light-gray rounded-xl p-4 shadow-xl">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold">99.999% Uptime</div>
+                                <div class="text-xs text-gray-500">Last 90 days</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating latency card -->
+                    <div class="absolute -top-4 -right-4 bg-brand-gray border border-brand-light-gray rounded-xl p-4 shadow-xl">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-brand-yellow/20 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold">42ms</div>
+                                <div class="text-xs text-gray-500">Avg. Latency</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Tech Stack Logos -->
+    <section class="py-16 bg-brand-dark border-y border-brand-light-gray">
+        <div class="max-w-7xl mx-auto px-6">
+            <p class="text-center text-gray-500 mb-8">Integrates seamlessly with your existing stack</p>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+                <div class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"/>
+                    </svg>
+                    <span class="font-semibold">Salesforce</span>
+                </div>
+                <div class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                    <span class="font-semibold">Zoho</span>
+                </div>
+                <div class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <span class="font-semibold">Microsoft Teams</span>
+                </div>
+                <div class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h5v7h7v9H6z"/>
+                    </svg>
+                    <span class="font-semibold">Webhook API</span>
+                </div>
+                <div class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.75 3.94L12 .64 5.25 3.94 12 7.24l6.75-3.3zM1.5 6.7v10.6l5.25 2.57V9.27L1.5 6.7zm21 0l-5.25 2.57v10.6l5.25-2.57V6.7zM6.75 19.87l5.25 2.57 5.25-2.57v-10.6L12 11.84l-5.25-2.57v10.6z"/>
+                    </svg>
+                    <span class="font-semibold">AWS</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Bento Grid - Architecture Breakdown -->
+    <section id="features" class="py-24 bg-brand-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="text-brand-yellow font-mono text-sm tracking-wider">ARCHITECTURE</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-4">Built for High Availability</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Enterprise infrastructure designed to never let you down. Every component is redundant, monitored, and optimized.</p>
+            </div>
+            
+            <!-- Bento Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Large Card - Dashboard Preview (spans 2 cols) -->
+                <div class="md:col-span-2 lg:row-span-2 bento-card bg-brand-dark rounded-2xl border border-brand-light-gray overflow-hidden group">
+                    <div class="p-8 h-full flex flex-col">
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="text-brand-yellow font-mono text-sm">Dashboard</span>
+                            <span class="text-xs text-gray-500 bg-brand-gray px-3 py-1 rounded-full">Live Preview</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">Real-time Analytics</h3>
+                        <p class="text-gray-400 mb-6">Monitor call quality, track MOS scores, and identify issues before they impact your users.</p>
+                        
+                        <!-- Mock Dashboard -->
+                        <div class="flex-1 bg-brand-gray rounded-xl p-4 border border-brand-light-gray">
+                            <div class="grid grid-cols-3 gap-4 mb-4">
+                                <div class="bg-brand-dark rounded-lg p-3">
+                                    <div class="text-xs text-gray-500">Active Calls</div>
+                                    <div class="text-xl font-bold text-brand-yellow">1,247</div>
+                                </div>
+                                <div class="bg-brand-dark rounded-lg p-3">
+                                    <div class="text-xs text-gray-500">MOS Score</div>
+                                    <div class="text-xl font-bold text-green-500">4.3</div>
+                                </div>
+                                <div class="bg-brand-dark rounded-lg p-3">
+                                    <div class="text-xs text-gray-500">Packet Loss</div>
+                                    <div class="text-xl font-bold">0.1%</div>
+                                </div>
+                            </div>
+                            <!-- Chart placeholder -->
+                            <div class="h-32 bg-brand-dark rounded-lg flex items-end justify-around p-4">
+                                <div class="w-4 bg-brand-yellow/30 rounded-t" style="height: 60%"></div>
+                                <div class="w-4 bg-brand-yellow/50 rounded-t" style="height: 80%"></div>
+                                <div class="w-4 bg-brand-yellow/70 rounded-t" style="height: 45%"></div>
+                                <div class="w-4 bg-brand-yellow rounded-t" style="height: 90%"></div>
+                                <div class="w-4 bg-brand-yellow/80 rounded-t" style="height: 70%"></div>
+                                <div class="w-4 bg-brand-yellow/60 rounded-t" style="height: 55%"></div>
+                                <div class="w-4 bg-brand-yellow/40 rounded-t" style="height: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 99.999% Uptime Card -->
+                <div class="bento-card bg-brand-dark rounded-2xl border border-brand-light-gray p-8 group">
+                    <div class="w-14 h-14 bg-green-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">99.999% Uptime</h3>
+                    <p class="text-gray-400 text-sm">SLA-backed guarantee with financial credits for any downtime.</p>
+                </div>
+                
+                <!-- End-to-end Encryption Card -->
+                <div class="bento-card bg-brand-dark rounded-2xl border border-brand-light-gray p-8 group">
+                    <div class="w-14 h-14 bg-brand-yellow/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">End-to-end Encryption</h3>
+                    <p class="text-gray-400 text-sm">TLS/SRTP encryption by default. SOC2 Type II compliant.</p>
+                </div>
+                
+                <!-- Geo-Redundancy Card -->
+                <div class="bento-card bg-brand-dark rounded-2xl border border-brand-light-gray p-8 group">
+                    <div class="w-14 h-14 bg-blue-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Geo-Redundancy</h3>
+                    <p class="text-gray-400 text-sm">Active-Active clusters across multiple availability zones.</p>
+                </div>
+                
+                <!-- Low Latency Card -->
+                <div class="bento-card bg-brand-dark rounded-2xl border border-brand-light-gray p-8 group">
+                    <div class="w-14 h-14 bg-purple-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Low Latency</h3>
+                    <p class="text-gray-400 text-sm">Optimized routing for &lt;50ms jitter globally.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Feature Deep Dive with Vertical Tabs -->
+    <section class="py-24 bg-brand-dark">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="text-brand-yellow font-mono text-sm tracking-wider">FEATURES</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-4">Powerful Tools, Simple Interface</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Everything you need to manage enterprise telephony, designed for technical teams.</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Vertical Tabs -->
+                <div class="space-y-4">
+                    <button data-tab="editor" class="tab-btn w-full text-left p-6 rounded-xl border border-brand-light-gray bg-brand-gray transition-all hover:border-brand-yellow active-tab">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-brand-yellow/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-1">Call Flow Visual Editor</h3>
+                                <p class="text-sm text-gray-400">Drag-and-drop IVR logic builder.</p>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button data-tab="analytics" class="tab-btn w-full text-left p-6 rounded-xl border border-brand-light-gray bg-brand-black transition-all hover:border-brand-yellow">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-1">Real-time Analytics</h3>
+                                <p class="text-sm text-gray-400">Live MOS score monitoring and packet loss tracking.</p>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button data-tab="api" class="tab-btn w-full text-left p-6 rounded-xl border border-brand-light-gray bg-brand-black transition-all hover:border-brand-yellow">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-1">API & Webhooks</h3>
+                                <p class="text-sm text-gray-400">Trigger events on call start/end via REST API.</p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                
+                <!-- Tab Content -->
+                <div class="lg:col-span-2">
+                    <!-- Editor Tab Content -->
+                    <div id="tab-editor" class="tab-content bg-brand-black rounded-2xl border border-brand-light-gray overflow-hidden">
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold mb-4">Visual Call Flow Builder</h3>
+                            <p class="text-gray-400 mb-6">Design complex IVR trees with our intuitive drag-and-drop interface. No coding required—but full API access when you need it.</p>
+                            
+                            <!-- Mock Flow Editor -->
+                            <div class="bg-brand-gray rounded-xl p-6 border border-brand-light-gray">
+                                <div class="flex items-center justify-center space-x-4">
+                                    <div class="bg-brand-dark rounded-lg p-4 border border-brand-light-gray">
+                                        <div class="text-xs text-gray-500 mb-1">Start</div>
+                                        <div class="text-sm font-mono">Incoming Call</div>
+                                    </div>
+                                    <svg class="w-8 h-8 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                    </svg>
+                                    <div class="bg-brand-dark rounded-lg p-4 border border-brand-yellow">
+                                        <div class="text-xs text-brand-yellow mb-1">IVR Menu</div>
+                                        <div class="text-sm font-mono">Press 1 for Sales...</div>
+                                    </div>
+                                    <svg class="w-8 h-8 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                    </svg>
+                                    <div class="bg-brand-dark rounded-lg p-4 border border-brand-light-gray">
+                                        <div class="text-xs text-gray-500 mb-1">Route</div>
+                                        <div class="text-sm font-mono">Queue: Sales</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Analytics Tab Content (hidden by default) -->
+                    <div id="tab-analytics" class="tab-content hidden bg-brand-black rounded-2xl border border-brand-light-gray overflow-hidden">
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold mb-4">Real-time Call Analytics</h3>
+                            <p class="text-gray-400 mb-6">Monitor every aspect of your call quality with live dashboards. Get alerted before issues affect your customers.</p>
+                            
+                            <div class="bg-brand-gray rounded-xl p-6 border border-brand-light-gray">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-brand-dark rounded-lg p-4">
+                                        <div class="text-sm text-gray-500 mb-2">MOS Score Distribution</div>
+                                        <div class="flex items-end space-x-1 h-20">
+                                            <div class="flex-1 bg-red-500/50 rounded-t" style="height: 10%"></div>
+                                            <div class="flex-1 bg-yellow-500/50 rounded-t" style="height: 15%"></div>
+                                            <div class="flex-1 bg-green-500/50 rounded-t" style="height: 35%"></div>
+                                            <div class="flex-1 bg-green-500/70 rounded-t" style="height: 65%"></div>
+                                            <div class="flex-1 bg-green-500 rounded-t" style="height: 100%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-brand-dark rounded-lg p-4">
+                                        <div class="text-sm text-gray-500 mb-2">Packet Loss Rate</div>
+                                        <div class="text-3xl font-bold text-green-500">0.02%</div>
+                                        <div class="text-xs text-gray-500 mt-1">Below threshold</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- API Tab Content (hidden by default) -->
+                    <div id="tab-api" class="tab-content hidden bg-brand-black rounded-2xl border border-brand-light-gray overflow-hidden">
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold mb-4">Powerful REST API</h3>
+                            <p class="text-gray-400 mb-6">Integrate telephony into your applications with our comprehensive API. Webhooks notify you in real-time.</p>
+                            
+                            <div class="bg-brand-gray rounded-xl border border-brand-light-gray overflow-hidden font-mono text-sm">
+                                <div class="flex items-center px-4 py-2 bg-brand-dark border-b border-brand-light-gray">
+                                    <span class="text-green-500">POST</span>
+                                    <span class="text-gray-400 ml-2">/api/v1/calls</span>
+                                </div>
+                                <pre class="p-4 text-gray-300 overflow-x-auto">{
+  <span class="text-blue-400">"to"</span>: <span class="text-green-400">"+1234567890"</span>,
+  <span class="text-blue-400">"from"</span>: <span class="text-green-400">"+0987654321"</span>,
+  <span class="text-blue-400">"webhook_url"</span>: <span class="text-green-400">"https://your-app.com/events"</span>,
+  <span class="text-blue-400">"record"</span>: <span class="text-purple-400">true</span>
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Developer Experience Section -->
+    <section id="developers" class="py-24 bg-brand-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left: Text Content -->
+                <div class="space-y-6">
+                    <span class="text-brand-yellow font-mono text-sm tracking-wider">DEVELOPER EXPERIENCE</span>
+                    <h2 class="text-3xl md:text-4xl font-bold">Built for Developers</h2>
+                    <p class="text-gray-400 text-lg leading-relaxed">
+                        First-class developer experience with comprehensive SDKs, detailed documentation, and a REST API that just makes sense.
+                    </p>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-start space-x-3">
+                            <svg class="w-6 h-6 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-300">SDKs for Python, Node.js, Go, and more</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <svg class="w-6 h-6 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-300">Real-time webhooks for all call events</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <svg class="w-6 h-6 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-300">Interactive API playground</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <svg class="w-6 h-6 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-300">OpenAPI spec for code generation</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="#" class="inline-flex items-center space-x-2 text-brand-yellow hover:underline font-mono">
+                        <span>View API Documentation</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </a>
+                </div>
+                
+                <!-- Right: Code Terminal Window -->
+                <div class="relative">
+                    <div class="bg-brand-dark rounded-2xl border border-brand-light-gray overflow-hidden code-glow">
+                        <!-- IDE Header -->
+                        <div class="flex items-center justify-between px-4 py-3 bg-brand-gray border-b border-brand-light-gray">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-500 font-mono bg-brand-dark px-2 py-1 rounded">main.py</span>
+                                <span class="text-xs text-gray-600 font-mono">Python 3.11</span>
+                            </div>
+                            <div></div>
+                        </div>
+                        
+                        <!-- Code Content -->
+                        <div class="p-6 font-mono text-sm leading-relaxed overflow-x-auto">
+                            <pre class="text-gray-300"><span class="text-gray-500"># Initiate an outbound call with HaPBX</span>
+<span class="text-purple-400">from</span> <span class="text-blue-400">hapbx</span> <span class="text-purple-400">import</span> Client
+
+client = Client(<span class="text-green-400">"your_api_key"</span>)
+
+<span class="text-gray-500"># Make a call with real-time transcription</span>
+call = client.calls.create(
+    <span class="text-blue-400">to</span>=<span class="text-green-400">"+1-555-123-4567"</span>,
+    <span class="text-blue-400">from_</span>=<span class="text-green-400">"+1-555-987-6543"</span>,
+    <span class="text-blue-400">webhook</span>=<span class="text-green-400">"https://app.example.com/events"</span>,
+    <span class="text-blue-400">record</span>=<span class="text-purple-400">True</span>,
+    <span class="text-blue-400">transcribe</span>=<span class="text-purple-400">True</span>
+)
+
+<span class="text-purple-400">print</span>(<span class="text-green-400">f"Call initiated: </span><span class="text-brand-yellow">{call.sid}</span><span class="text-green-400">"</span>)
+<span class="text-gray-500"># Output: Call initiated: CA123abc456def789</span></pre>
+                        </div>
+                        
+                        <!-- Terminal Output -->
+                        <div class="border-t border-brand-light-gray bg-brand-black p-4 font-mono text-sm">
+                            <div class="text-gray-500 mb-2">$ python main.py</div>
+                            <div class="text-green-400">✓ Call initiated: CA123abc456def789</div>
+                            <div class="text-gray-500">→ Webhook registered at https://app.example.com/events</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating badge -->
+                    <div class="absolute -bottom-4 -right-4 bg-brand-gray border border-brand-light-gray rounded-xl px-4 py-2 shadow-xl">
+                        <span class="text-xs text-gray-500">Response time:</span>
+                        <span class="text-sm font-bold text-green-500 ml-2">&lt;100ms</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 bg-brand-dark">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="text-brand-yellow font-mono text-sm tracking-wider">PRICING</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-4">Transparent Pricing</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">No hidden fees. Scale confidently with predictable costs.</p>
+            </div>
+            
+            <!-- Pricing Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-brand-light-gray">
+                            <th class="text-left py-4 px-6 font-mono text-sm text-gray-500">Feature</th>
+                            <th class="py-4 px-6 text-center">
+                                <div class="font-bold">Lite</div>
+                                <div class="text-brand-yellow font-mono text-sm">$49/mo</div>
+                            </th>
+                            <th class="py-4 px-6 text-center bg-brand-gray rounded-t-xl">
+                                <div class="font-bold">Standard</div>
+                                <div class="text-brand-yellow font-mono text-sm">$149/mo</div>
+                                <span class="inline-block mt-1 text-xs bg-brand-yellow text-brand-black px-2 py-0.5 rounded-full">Popular</span>
+                            </th>
+                            <th class="py-4 px-6 text-center">
+                                <div class="font-bold">Pro</div>
+                                <div class="text-brand-yellow font-mono text-sm">$399/mo</div>
+                            </th>
+                            <th class="py-4 px-6 text-center">
+                                <div class="font-bold">Enterprise</div>
+                                <div class="text-brand-yellow font-mono text-sm">Custom</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="font-mono text-sm">
+                        <tr class="border-b border-brand-light-gray">
+                            <td class="py-4 px-6 text-gray-400">Concurrent Calls</td>
+                            <td class="py-4 px-6 text-center">10</td>
+                            <td class="py-4 px-6 text-center bg-brand-gray">50</td>
+                            <td class="py-4 px-6 text-center">200</td>
+                            <td class="py-4 px-6 text-center">Unlimited</td>
+                        </tr>
+                        <tr class="border-b border-brand-light-gray">
+                            <td class="py-4 px-6 text-gray-400">SIP Trunks</td>
+                            <td class="py-4 px-6 text-center">2</td>
+                            <td class="py-4 px-6 text-center bg-brand-gray">10</td>
+                            <td class="py-4 px-6 text-center">50</td>
+                            <td class="py-4 px-6 text-center">Unlimited</td>
+                        </tr>
+                        <tr class="border-b border-brand-light-gray">
+                            <td class="py-4 px-6 text-gray-400">API Rate Limit</td>
+                            <td class="py-4 px-6 text-center">100/min</td>
+                            <td class="py-4 px-6 text-center bg-brand-gray">1,000/min</td>
+                            <td class="py-4 px-6 text-center">10,000/min</td>
+                            <td class="py-4 px-6 text-center">Custom</td>
+                        </tr>
+                        <tr class="border-b border-brand-light-gray">
+                            <td class="py-4 px-6 text-gray-400">Support SLA</td>
+                            <td class="py-4 px-6 text-center">48h</td>
+                            <td class="py-4 px-6 text-center bg-brand-gray">24h</td>
+                            <td class="py-4 px-6 text-center">4h</td>
+                            <td class="py-4 px-6 text-center">1h + Dedicated</td>
+                        </tr>
+                        <tr class="border-b border-brand-light-gray">
+                            <td class="py-4 px-6 text-gray-400">Analytics</td>
+                            <td class="py-4 px-6 text-center">Basic</td>
+                            <td class="py-4 px-6 text-center bg-brand-gray">Advanced</td>
+                            <td class="py-4 px-6 text-center">Advanced + Export</td>
+                            <td class="py-4 px-6 text-center">Custom Reports</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6"></td>
+                            <td class="py-4 px-6 text-center">
+                                <a href="#" class="inline-block border border-gray-600 px-4 py-2 rounded-lg hover:border-brand-yellow transition-colors">Start Free</a>
+                            </td>
+                            <td class="py-6 px-6 text-center bg-brand-gray rounded-b-xl">
+                                <a href="#" class="inline-block bg-brand-yellow text-brand-black px-6 py-2 rounded-lg font-semibold hover:bg-brand-yellow-dark transition-colors">Get Started</a>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <a href="#" class="inline-block border border-gray-600 px-4 py-2 rounded-lg hover:border-brand-yellow transition-colors">Start Free</a>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <a href="#" class="inline-block border border-gray-600 px-4 py-2 rounded-lg hover:border-brand-yellow transition-colors">Contact Sales</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Developer Resources -->
+    <section id="docs" class="py-24 bg-brand-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="text-brand-yellow font-mono text-sm tracking-wider">RESOURCES</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-4">Developer Resources</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Everything you need to integrate, deploy, and scale.</p>
+            </div>
+            
+            <!-- Resource Cards -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- API Reference -->
+                <a href="#" class="group bento-card bg-brand-dark rounded-2xl border border-brand-light-gray p-8 hover:border-brand-yellow transition-all">
+                    <div class="w-14 h-14 bg-brand-yellow/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-brand-yellow/30 transition-colors">
+                        <svg class="w-7 h-7 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">API Reference</h3>
+                    <p class="text-gray-400 mb-4">Complete API documentation with examples in multiple languages.</p>
+                    <span class="text-brand-yellow font-mono text-sm flex items-center space-x-2">
+                        <span>View Docs</span>
+                        <svg class="w-4 h-4 arrow-move" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </span>
+                </a>
+                
+                <!-- Status Page -->
+                <a href="#" class="group bento-card bg-brand-dark rounded-2xl border border-brand-light-gray p-8 hover:border-brand-yellow transition-all">
+                    <div class="w-14 h-14 bg-green-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/30 transition-colors">
+                        <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Status Page</h3>
+                    <p class="text-gray-400 mb-4">Real-time system status and historical uptime data.</p>
+                    <span class="text-brand-yellow font-mono text-sm flex items-center space-x-2">
+                        <span>Check Uptime</span>
+                        <svg class="w-4 h-4 arrow-move" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </span>
+                </a>
+                
+                <!-- Knowledge Base -->
+                <a href="#" class="group bento-card bg-brand-dark rounded-2xl border border-brand-light-gray p-8 hover:border-brand-yellow transition-all">
+                    <div class="w-14 h-14 bg-blue-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500/30 transition-colors">
+                        <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Knowledge Base</h3>
+                    <p class="text-gray-400 mb-4">Step-by-step guides, tutorials, and best practices.</p>
+                    <span class="text-brand-yellow font-mono text-sm flex items-center space-x-2">
+                        <span>Setup Guides</span>
+                        <svg class="w-4 h-4 arrow-move" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-24 bg-brand-dark border-t border-brand-light-gray">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to upgrade your telephony infrastructure?</h2>
+            <p class="text-xl text-gray-400 mb-8">Start your free trial today. No credit card required.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#" class="group bg-brand-yellow text-brand-black px-8 py-4 rounded-xl font-semibold text-lg hover:bg-brand-yellow-dark transition-all hover:shadow-lg hover:shadow-brand-yellow/20">
+                    Start Free Trial
+                    <span class="inline-block ml-2 arrow-move">→</span>
+                </a>
+                <a href="#" class="group flex items-center space-x-2 border border-gray-600 px-8 py-4 rounded-xl hover:border-brand-yellow hover:text-brand-yellow transition-all">
+                    <span>Schedule Demo</span>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-brand-black border-t border-brand-light-gray py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-5 gap-8 mb-12">
+                <!-- Brand -->
+                <div class="md:col-span-2">
+                    <a href="#" class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 bg-brand-yellow rounded-lg flex items-center justify-center">
+                            <span class="text-brand-black font-bold text-xl">H</span>
+                        </div>
+                        <span class="text-xl font-bold">HaPBX</span>
+                    </a>
+                    <p class="text-gray-400 text-sm mb-4 max-w-xs">Enterprise-grade VoIP infrastructure engineered for high availability and performance.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Product -->
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Features</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Enterprise</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Integrations</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Developers -->
+                <div>
+                    <h4 class="font-semibold mb-4">Developers</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors font-mono">API Docs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">SDKs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Status</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Changelog</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Company -->
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">About</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="pt-8 border-t border-brand-light-gray flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm">© 2024 HaPBX. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Typing animation for hero subheadline
+        const typingElement = document.getElementById('typing-text');
+        const words = ['IT Teams', 'DevOps', 'Scalability', 'High Availability', 'Enterprise'];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typingSpeed = 100;
+        
+        function typeWord() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                typingElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+                typingSpeed = 50;
+            } else {
+                typingElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+                typingSpeed = 100;
+            }
+            
+            if (!isDeleting && charIndex === currentWord.length) {
+                typingSpeed = 2000; // Pause at end
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                typingSpeed = 500;
+            }
+            
+            setTimeout(typeWord, typingSpeed);
+        }
+        
+        // Start typing animation
+        setTimeout(typeWord, 1000);
+        
+        // Sticky navbar with blur effect
+        const navbar = document.getElementById('navbar');
+        let lastScrollY = window.scrollY;
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-brand-black/80', 'navbar-blur', 'border-b', 'border-brand-light-gray');
+            } else {
+                navbar.classList.remove('bg-brand-black/80', 'navbar-blur', 'border-b', 'border-brand-light-gray');
+            }
+            lastScrollY = window.scrollY;
+        });
+        
+        // Tab functionality for Feature Deep Dive
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                
+                // Update button states
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('bg-brand-gray', 'active-tab');
+                    btn.classList.add('bg-brand-black');
+                });
+                button.classList.remove('bg-brand-black');
+                button.classList.add('bg-brand-gray', 'active-tab');
+                
+                // Update content visibility
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            });
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Apply fade-in to sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+        
+        // Initial section visibility
+        document.querySelector('#hero').style.opacity = '1';
+        document.querySelector('#hero').style.transform = 'translateY(0)';
+    </script>
+</body>
+</html>
