@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-navy-900 text-white font-sans antialiased;
+    overflow-x: hidden;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-navy-800;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-neon-cyan/30 rounded;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-neon-cyan/50;
+  }
+}
+
+@layer components {
+  /* Neon glow text effect */
+  .text-glow-cyan {
+    text-shadow: 0 0 10px rgba(0, 245, 255, 0.5), 0 0 20px rgba(0, 245, 255, 0.3);
+  }
+  
+  .text-glow-purple {
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3);
+  }
+  
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent;
+  }
+  
+  /* Glass card effect */
+  .glass-card {
+    @apply bg-navy-800/50 backdrop-blur-xl border border-white/10 rounded-2xl;
+  }
+  
+  /* Neon border glow */
+  .neon-border {
+    @apply border border-neon-cyan/30;
+    box-shadow: 0 0 15px rgba(0, 245, 255, 0.1), inset 0 0 15px rgba(0, 245, 255, 0.05);
+  }
+  
+  /* Button styles */
+  .btn-primary {
+    @apply px-6 py-3 bg-gradient-to-r from-neon-cyan to-neon-cyan-dark text-navy-900 font-semibold rounded-lg;
+    @apply transition-all duration-300 hover:shadow-neon-cyan hover:scale-105;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-3 border border-neon-purple/50 text-neon-purple font-semibold rounded-lg;
+    @apply transition-all duration-300 hover:bg-neon-purple/10 hover:border-neon-purple;
+  }
+  
+  /* Code block styles */
+  .code-window {
+    @apply bg-navy-900 rounded-xl overflow-hidden border border-white/10;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+  
+  .code-header {
+    @apply flex items-center gap-2 px-4 py-3 bg-navy-800 border-b border-white/10;
+  }
+  
+  .code-dot {
+    @apply w-3 h-3 rounded-full;
+  }
+}
+
+@layer utilities {
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Grid background pattern */
+  .bg-grid {
+    background-image: 
+      linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+}
